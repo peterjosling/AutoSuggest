@@ -20,6 +20,10 @@
  */
 
 (function($){
+	function escapeRegex(input) {
+		return input.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+	}
+
 	$.fn.autoSuggest = function(data, options) {
 		var defaults = {
 			asHtmlID: false,
@@ -112,7 +116,7 @@
 					input.val("");
 					var lastChar = prefill_value.substring(prefill_value.length-1);
 					if(lastChar != ","){ prefill_value = prefill_value+","; }
-					values_input.val(","+prefill_value);
+					values_input.val(","+prefill_value).trigger('change');
 					$("li.as-selection-item", selections_holder).addClass("blur").removeClass("selected");
 				}
 				input.after(values_input);
@@ -165,7 +169,8 @@
 								last = last[last.length - 2];
 								selections_holder.children().not(org_li.prev()).removeClass("selected");
 								if(org_li.prev().hasClass("selected")){
-									values_input.val(values_input.val().replace(","+last+",",","));
+									var r = new RegExp('(^|,)' + escapeRegex(last) + '(,|$)')
+									values_input.val(values_input.val().replace(r,",")).trigger('change');
 									opts.selectionRemoved.call(this, org_li.prev());
 								} else {
 									opts.selectionClick.call(this, org_li.prev());
@@ -183,8 +188,8 @@
 							break;
 						case 9: case 188:  // tab or comma
 							tab_press = true;
-							var i_input = input.val().replace(/(,)/g, "");
-							if(i_input != "" && values_input.val().search(","+i_input+",") < 0 && i_input.length >= opts.minChars){
+							var i_input = input.val().replace(/(,)/g, "").trim();
+							if(i_input != "" && values_input.val().search(new RegExp("(^|,)" + escapeRegex(i_input) + '(,|$)')) < 0 && i_input.length >= opts.minChars){
 								e.preventDefault();
 								var n_data = {};
 								n_data[opts.selectedItemProp] = i_input;
@@ -193,6 +198,7 @@
 								add_selected_item(n_data, "00"+(lis+1));
 								input.val("");
 							}
+							break;
 						case 13: // return
 							tab_press = false;
 							var active = $("li.active:first", results_holder);
@@ -271,8 +277,11 @@
 							}
 						}
 						if(str){
-							if (!opts.matchCase){ str = str.toLowerCase(); }
-							if(str.search(query) != -1 && values_input.val().search(","+data[num][opts.selectedValuesProp]+",") == -1){
+							if (!opts.matchCase){
+								str = str.toLowerCase();
+							}
+
+							if (str.search(escapeRegex(query)) != -1 && values_input.val().search(escapeRegex("(^|,)"+data[num][opts.selectedValuesProp]+"(,|$)")) == -1){
 								forward = true;
 							}
 						}
@@ -295,9 +304,9 @@
 								}).data("data",{attributes: data[num], num: num_count});
 							var this_data = $.extend({},data[num]);
 							if (!opts.matchCase){
-								var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + query + ")(?![^<>]*>)(?![^&;]+;)", "gi");
+								var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + escapeRegex(query) + ")(?![^<>]*>)(?![^&;]+;)", "gi");
 							} else {
-								var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + query + ")(?![^<>]*>)(?![^&;]+;)", "g");
+								var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + escapeRegex(query) + ")(?![^<>]*>)(?![^&;]+;)", "g");
 							}
 
 							if(opts.resultsHighlight){
@@ -324,14 +333,14 @@
 				}
 
 				function add_selected_item(data, num){
-					values_input.val(values_input.val()+data[opts.selectedValuesProp]+",");
+					values_input.val(values_input.val()+data[opts.selectedValuesProp]+",").trigger('change');
 					var item = $('<li class="as-selection-item" id="as-selection-'+num+'"></li>').click(function(){
 							opts.selectionClick.call(this, $(this));
 							selections_holder.children().removeClass("selected");
 							$(this).addClass("selected");
 						}).mousedown(function(){ input_focus = false; });
 					var close = $('<a class="as-close">&times;</a>').click(function(){
-							values_input.val(values_input.val().replace(","+data[opts.selectedValuesProp]+",",","));
+							values_input.val(values_input.val().replace(data[opts.selectedValuesProp]+",","")).trigger('change');
 							opts.selectionRemoved.call(this, item);
 							input_focus = true;
 							input.focus();
