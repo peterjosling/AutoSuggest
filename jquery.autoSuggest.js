@@ -323,7 +323,6 @@
 								formatted = opts.formatList.call(this, this_data, formatted);
 							}
 							results_ul.append(formatted);
-							delete this_data;
 							matchCount++;
 							if(opts.retrieveLimit && opts.retrieveLimit == matchCount ){ break; }
 						}
