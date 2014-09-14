@@ -67,12 +67,14 @@
 		}
 		if((d_type == "object" && d_count > 0) || d_type == "string"){
 			return this.each(function(x){
+				var x_id
+
 				if(!opts.asHtmlID){
 					x = x+""+Math.floor(Math.random()*100); //this ensures there will be unique IDs on the page if autoSuggest() is called multiple times
-					var x_id = "as-input-"+x;
+					x_id = "as-input-"+x;
 				} else {
 					x = opts.asHtmlID;
-					var x_id = x;
+					x_id = x;
 				}
 				opts.start.call(this);
 				var input = $(this);
@@ -87,9 +89,10 @@
 				var results_ul =  $('<ul class="as-list"></ul>');
 				var values_input = $('<input type="hidden" class="as-values" name="as_values_'+x+'" id="as-values-'+x+'" />');
 				var prefill_value = "";
+				var i;
 				if(typeof opts.preFill == "string"){
 					var vals = opts.preFill.split(",");
-					for(var i=0; i < vals.length; i++){
+					for(i=0; i < vals.length; i++){
 						var v_data = {};
 						v_data[opts.selectedValuesProp] = vals[i];
 						if(vals[i] != ""){
@@ -102,7 +105,7 @@
 					var prefill_count = 0;
 					for (var k in opts.preFill) if (opts.preFill.hasOwnProperty(k)) prefill_count++;
 					if(prefill_count > 0){
-						for(var i=0; i < prefill_count; i++){
+						for(i=0; i < prefill_count; i++){
 							var new_v = opts.preFill[i][opts.selectedValuesProp];
 							if(new_v == undefined){ new_v = ""; }
 							prefill_value = prefill_value+new_v+",";
@@ -266,10 +269,11 @@
 						var num = i;
 						num_count++;
 						var forward = false;
+						var str;
 						if(opts.searchObjProps == "value") {
-							var str = data[num].value;
+							str = data[num].value;
 						} else {
-							var str = "";
+							str = "";
 							var names = opts.searchObjProps.split(",");
 							for(var y=0;y<names.length;y++){
 								var name = $.trim(names[y]);
@@ -303,10 +307,11 @@
 									$(this).addClass("active");
 								}).data("data",{attributes: data[num], num: num_count});
 							var this_data = $.extend({},data[num]);
+							var regx;
 							if (!opts.matchCase){
-								var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + escapeRegex(query) + ")(?![^<>]*>)(?![^&;]+;)", "gi");
+								regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + escapeRegex(query) + ")(?![^<>]*>)(?![^&;]+;)", "gi");
 							} else {
-								var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + escapeRegex(query) + ")(?![^<>]*>)(?![^&;]+;)", "g");
+								regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + escapeRegex(query) + ")(?![^<>]*>)(?![^&;]+;)", "g");
 							}
 
 							if(opts.resultsHighlight){
@@ -353,10 +358,11 @@
 				function moveSelection(direction){
 					if($(":visible",results_holder).length > 0){
 						var lis = $("li", results_holder);
+						var start;
 						if(direction == "down"){
-							var start = lis.eq(0);
+							start = lis.eq(0);
 						} else {
-							var start = lis.filter(":last");
+							start = lis.filter(":last");
 						}
 						var active = $("li.active:first", results_holder);
 						if(active.length > 0){
