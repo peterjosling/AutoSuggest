@@ -1,0 +1,23 @@
+{
+  "name": "autosuggest",
+  "homepage": "https://github.com/peterjosling/AutoSuggest",
+  "authors": [
+    "Drew Wilson (http://drewwilson.com)",
+    "Peter Josling <peterjosling@gmail.com>"
+  ],
+  "description": "Bugfix fork of AutoSuggest by Drew Wilson https://github.com/drewwilson/AutoSuggest",
+  "main": [
+    "jquery.autoSuggest.js",
+    "autoSuggest.css"
+  ],
+  "keywords": [
+    "autosuggest",
+    "auto",
+    "suggest",
+    "jquery"
+  ],
+  "license": [
+    "MIT",
+    "GPL"
+  ]
+}
