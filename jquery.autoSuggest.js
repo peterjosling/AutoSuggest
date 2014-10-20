@@ -11,7 +11,7 @@
  * the fly. It supports keybord navigation (UP + DOWN + RETURN), as well
  * as multiple AutoSuggest fields on the same page.
  *
- * Inspied by the Autocomplete plugin by: Jšrn Zaefferer
+ * Inspired by the Autocomplete plugin by: Jšrn Zaefferer
  * and the Facelist plugin by: Ian Tearle (iantearle.com)
  *
  * This AutoSuggest jQuery plug-in is dual licensed under the MIT and GPL licenses:
@@ -43,6 +43,7 @@
 			resultsHighlight: true,
 			neverSubmit: false,
 			selectionLimit: false,
+			selectFirstDataItem: false,
 			showResultList: true,
 		  	start: function(){},
 		  	selectionClick: function(elem){},
@@ -333,6 +334,7 @@
 					}
 					results_ul.css('width', selections_holder.outerWidth());
 					results_holder.show();
+					if (opts.selectFirstDataItem) { setFirstItemSelected(); }
 					opts.resultsComplete.call(this);
 				}
 
@@ -375,6 +377,20 @@
 						start.addClass('active');
 					}
 				}
+
+                function setFirstItemSelected() {
+                    if ($(":visible", results_holder).length > 0) {
+                        var lis = $("li", results_holder);
+                        var start = lis.eq(0);
+                        var active = $("li.active:first", results_holder);
+
+                        if (active.length > 0) {
+                              start = active.next();
+                        }
+                        lis.removeClass("active");
+                        start.addClass("active");
+                    }
+                }
 
 			});
 		}
