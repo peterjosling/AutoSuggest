@@ -353,7 +353,12 @@
 							return false;
 						});
 					org_li.before(item.html(data[opts.selectedItemProp]).prepend(close));
+					var blur = false;
+					if(opts.selectionLimit && $('li.as-selection-item', selections_holder).length == opts.selectionLimit){
+						blur = true;
+					}
 					opts.selectionAdded.call(this, org_li.prev());
+					if(blur) input.trigger('blur');
 				}
 
 				function moveSelection(direction){
