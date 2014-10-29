@@ -44,6 +44,7 @@
 			neverSubmit: false,
 			selectionLimit: false,
 			selectFirstDataItem: false,
+			unfocusOnComplete: false,
 			showResultList: true,
 		  	start: function(){},
 		  	selectionClick: function(elem){},
@@ -353,7 +354,14 @@
 							return false;
 						});
 					org_li.before(item.html(data[opts.selectedItemProp]).prepend(close));
+					var tab = false;
+					if(opts.unfocusOnComplete && opts.selectionLimit && $('li.as-selection-item', selections_holder).length == opts.selectionLimit){
+						tab = true;
+					}
 					opts.selectionAdded.call(this, org_li.prev());
+					if(tab) {
+						input.trigger('blur');
+					}
 				}
 
 				function moveSelection(direction){
