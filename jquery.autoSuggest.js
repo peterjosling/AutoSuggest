@@ -44,7 +44,7 @@
 			neverSubmit: false,
 			selectionLimit: false,
 			selectFirstDataItem: false,
-			unfocusOnComplete: false,
+			blurOnComplete: false,
 			showResultList: true,
 		  	start: function(){},
 		  	selectionClick: function(elem){},
@@ -355,7 +355,7 @@
 						});
 					org_li.before(item.html(data[opts.selectedItemProp]).prepend(close));
 					var tab = false;
-					if(opts.unfocusOnComplete && opts.selectionLimit && $('li.as-selection-item', selections_holder).length == opts.selectionLimit){
+					if(opts.blurOnComplete && opts.selectionLimit && $('li.as-selection-item', selections_holder).length == opts.selectionLimit){
 						tab = true;
 					}
 					opts.selectionAdded.call(this, org_li.prev());
