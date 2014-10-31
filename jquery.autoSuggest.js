@@ -4,7 +4,7 @@
  * www.drewwilson.com
  * code.drewwilson.com/entry/autosuggest-jquery-plugin
  *
- * Version 1.4.1   -   Updated: Sep. 14, 2014
+ * Version 1.4.2   -   Updated: Oct. 31, 2014
  *
  * This Plug-In will auto-complete or auto-suggest completed search queries
  * for you as you type. You can add multiple selections and remove them on
@@ -44,7 +44,7 @@
 			neverSubmit: false,
 			selectionLimit: false,
 			selectFirstDataItem: false,
-			unfocusOnComplete: false,
+			blurOnComplete: false,
 			showResultList: true,
 		  	start: function(){},
 		  	selectionClick: function(elem){},
@@ -355,7 +355,7 @@
 						});
 					org_li.before(item.html(data[opts.selectedItemProp]).prepend(close));
 					var tab = false;
-					if(opts.unfocusOnComplete && opts.selectionLimit && $('li.as-selection-item', selections_holder).length == opts.selectionLimit){
+					if(opts.blurOnComplete && opts.selectionLimit && $('li.as-selection-item', selections_holder).length == opts.selectionLimit){
 						tab = true;
 					}
 					opts.selectionAdded.call(this, org_li.prev());
