@@ -4,7 +4,7 @@
  * www.drewwilson.com
  * code.drewwilson.com/entry/autosuggest-jquery-plugin
  *
- * Version 1.4.1   -   Updated: Sep. 14, 2014
+ * Version 1.4.2   -   Updated: Oct. 31, 2014
  *
  * This Plug-In will auto-complete or auto-suggest completed search queries
  * for you as you type. You can add multiple selections and remove them on
